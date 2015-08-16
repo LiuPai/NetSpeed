@@ -58,9 +58,10 @@ const App = new Lang.Class(
         listStore.set (defaultGw, [1], ["gtk-network"]);
 
         let nmc = NMC.Client.new();
-        this._devices = nmc.get_devices() || [ ];
+        let devices = nmc.get_devices() || [ ];
+        this._devices = [ ];
 
-        for each (let dev in this._devices) {
+        for each (let dev in devices) {
             let iconname;
             switch (dev.device_type) {
                 case NetworkManager.DeviceType.ETHERNET:
@@ -84,6 +85,7 @@ const App = new Lang.Class(
                 default:
                     continue;
             }
+            this._devices.push(dev);
             let iter = listStore.append();
             listStore.set (iter, [0], [dev.interface]);
             listStore.set (iter, [1], [iconname]);
